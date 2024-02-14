@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>We socket message </title>
+</head>
+
+<body>
+    <ul id="append_message">
+    </ul>
+</body>
+
+</html>
+
+<script>
+    const ws = new WebSocket('ws://localhost:8000/ws');
+    ws.onopen = () => {
+        console.log('WebSocket connection established.');
+    };
+    ws.onmessage = (event) => {
+        var ul = document.getElementById("append_message");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(event.data));
+        ul.appendChild(li);
+        console.log('Received message:', event.data);
+    };
+    ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+    };
+    ws.onclose = () => {
+        console.log('WebSocket connection closed.');
+    };
+</script>

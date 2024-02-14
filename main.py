@@ -15,7 +15,7 @@ producer = Producer({'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS})
 # Kafka consumer
 consumer = Consumer({
     'bootstrap.servers': KAFKA_BOOTSTRAP_SERVERS,
-    'group.id': 'my_consumer_group',
+    'group.id': 'my_consumer_group',  # custom group id you have to set
     'auto.offset.reset': 'earliest'
 })
 consumer.subscribe([KAFKA_TOPIC])
@@ -23,7 +23,7 @@ consumer.subscribe([KAFKA_TOPIC])
 
 @app.post("/produce/{message}")
 async def produce_message(message: str):
-    message = 'message ' + message
+    message = 'message : ' + message
     producer.produce(KAFKA_TOPIC, message.encode('utf-8'))
     producer.flush()
     return {"message": "Message produced successfully", "body_msg": message}
@@ -50,4 +50,3 @@ async def consume_message():
 
 if __name__ == "__main__":
     uvicorn.run("main:app", port=8000, host="127.0.0.1", reload=True)
-    # uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
